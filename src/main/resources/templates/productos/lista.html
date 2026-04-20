@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; background-color: #f8f9fa; color: #333; }
+        h1 { color: #065A82; border-bottom: 2px solid #065A82; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        table { border-collapse: collapse; width: 100%; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+        th { background: #065A82; color: white; }
+        tr:nth-child(even) { background: #f0f4f7; }
+        tr:hover { background: #e3eef5; }
+        .btn { padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 0.85rem; display: inline-block; }
+        .btn-edit { background: #1C7293; color: white; }
+        .btn-edit:hover { background: #155a72; }
+        .btn-del { background: #C62828; color: white; }
+        .btn-del:hover { background: #a01e1e; }
+        .btn-new { background: #2E7D32; color: white; margin-bottom: 1rem; display: inline-block; padding: 8px 16px; font-size: 0.95rem; }
+        .btn-new:hover { background: #235e26; }
+        .empty-msg { text-align: center; color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Productos</h1>
+
+    <!-- Botón para ir al formulario de creación -->
+    <a th:href="@{/productos/nuevo}" class="btn btn-new">+ Nuevo Producto</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Thymeleaf itera sobre la lista enviada por el controlador -->
+            <tr th:each="p : ${productos}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.nombre}"></td>
+                <td th:text="${p.descripcion}"></td>
+                <!-- Precio formateado con símbolo $ y 2 decimales -->
+                <td th:text="${'$' + #numbers.formatDecimal(p.precio, 1, 2)}"></td>
+                <td>
+                    <!-- Enlace de edición: pasa el ID del producto en la URL -->
+                    <a th:href="@{/productos/editar/{id}(id=${p.id})}" class="btn btn-edit">Editar</a>
+                    <!-- Enlace de eliminación con confirmación del usuario -->
+                    <a th:href="@{/productos/eliminar/{id}(id=${p.id})}" class="btn btn-del"
+                       onclick="return confirm('¿Desea eliminar este producto?')">Eliminar</a>
+                </td>
+            </tr>
+            <!-- Mensaje cuando no hay productos registrados -->
+            <tr th:if="${#lists.isEmpty(productos)}">
+                <td colspan="5" class="empty-msg">No hay productos registrados.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

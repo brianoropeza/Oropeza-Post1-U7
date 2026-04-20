@@ -1,0 +1,4 @@
+com\universidad\productosweb\model\Producto.class
+com\universidad\productosweb\controller\ProductoController.class
+com\universidad\productosweb\service\ProductoService.class
+com\universidad\productosweb\ProductosWebApplication.class
